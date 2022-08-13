@@ -8,14 +8,17 @@ client.once('ready', () => {
 	console.log('Ready!');
 });
 
+let command = {
+    "야": "뭐 임마!",
+    "누구신지": "이수성의 남친입니다 :)"
+}
+
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
 	const { commandName } = interaction;
 
-	if (commandName === '야') {
-		await interaction.reply('뭐 임마!');
-	}
+    await interaction.reply(command[commandName]);
 });
 
 

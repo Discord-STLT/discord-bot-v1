@@ -4,6 +4,7 @@ const { clientId, guildId, token } = require('./config.json');
 
 const commands = [
 	new SlashCommandBuilder().setName('야').setDescription('"왜 임마"라고 대답합니다.'),
+	new SlashCommandBuilder().setName('누구신지').setDescription('이수성의 남친입니다 :)'),
 ]
 	.map(command => command.toJSON());
 
