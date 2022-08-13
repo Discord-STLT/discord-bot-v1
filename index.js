@@ -86,6 +86,7 @@ rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
 	.then(() => console.log('Successfully registered application commands.'))
 	.catch(console.error);
 
+
 // 응답 부분
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
