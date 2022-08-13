@@ -10,7 +10,7 @@ client.once('ready', () => {
 
 let command = {
     "야": "뭐 임마!",
-    "누구신지": "이수성의 남친입니다 :)"
+    "누구신지": "최재민의 남친입니다 :)"
 }
 
 client.on('interactionCreate', async interaction => {
