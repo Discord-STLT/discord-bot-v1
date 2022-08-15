@@ -25,8 +25,8 @@ let command = [
             
                 const listCallback = (error, response, body) => {
                     let today = new Date();
-                    month = month ? month : today.getMonth() + 1;
-                    date = date ? date : today.getDate();
+                    month = month ?? today.getMonth() + 1;
+                    date = date ?? today.getDate();
             
                     let yymm = `${month}월 ${date}일`;
                     
@@ -53,7 +53,6 @@ let command = [
                                 String(res[i].split(': ')[1].replace(/\//gi, '\n')) + "\n\n";
                 }
                 interaction.reply(String(rpy));
-
             });
         },
         callback: true,
@@ -67,6 +66,11 @@ let command = [
             return Math.floor(i);
         },
         discription: "0~9 중 랜덤 숫자를 출력합니다."
+    },
+    {
+        command: "깃허브",
+        reply: "https://github.com/Discord-STLT/discord-bot-v1",
+        discription: "STLT 봇의 깃허브 주소를 표시합니다."
     }
 ]
 
