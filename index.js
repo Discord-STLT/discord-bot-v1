@@ -15,44 +15,27 @@ let command = [
     {
         command: "급식",
         reply: (client, interaction) => {
-            const getMeal = (_callback = () => {}, month, date) => {
-                let rep;
-                const contentCallback = (error, response, body) => {
-                    let data = body.toString().split('xe_content"><p>');
-                    rep = data[1].split('</p>')[0].split("<br />\n");
-                    _callback(rep);
-                };
-            
-                const listCallback = (error, response, body) => {
-                    let today = new Date();
-                    month = month ?? today.getMonth() + 1;
-                    date = date ?? today.getDate();
-            
-                    let yymm = `${month}월 ${date}일`;
-                    
-                    let data = body.toString().split('<');
-                    let url;
-            
-                    for(let i = 0; i < data.length; i++){
-                        if(data[i].includes(yymm))
-                            url = data[i].split('"')[3];
-                    }
-                    request({url: url, encoding: null}, contentCallback);
-                };
-                request({url: 'https://www.dimigo.hs.kr/index.php?mid=school_cafeteria', encoding: null}, listCallback);
-            }
-            getMeal((res) => {
+            request({
+                url: 'https://api.dimigo.in/meal/date/2022-08-17',
+                gzip: true
+            }, (error, response, body) => {
+                body = JSON.parse(body).meal;
                 let today = new Date();
                 let month = today.getMonth() + 1;
                 let date = today.getDate();
-                let rpy = "";
-                for(let i = 0; i < 3; i++){
-                    res[i] = res[i].replace(/\*/gi, '');
-                    rpy += "**" + String(month) + "월 " + String(date) + "일 "
-                                + String(res[i].split(': ')[0]) + "** \n" + 
-                                String(res[i].split(': ')[1].replace(/\//gi, '\n')) + "\n\n";
+                let print = `** ${month}월 ${date}일 아침 **\n`;
+                for(let i = 0; i < body.breakfast.length; i++){
+                    print += `${body.breakfast[i]}\n`;
                 }
-                interaction.reply(String(rpy));
+                print += `\n** ${month}월 ${date}일 점심 **\n`;
+                for(let i = 0; i < body.lunch.length; i++){
+                    print += `${body.lunch[i]}\n`;
+                }
+                print += `\n** ${month}월 ${date}일 저녁 **\n`;
+                for(let i = 0; i < body.dinner.length; i++){
+                    print += `${body.dinner[i]}\n`;
+                }
+                interaction.reply(String(print));
             });
         },
         callback: true,
