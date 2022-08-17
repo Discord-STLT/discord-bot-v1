@@ -15,14 +15,14 @@ let command = [
     {
         command: "급식",
         reply: (client, interaction) => {
+            let today = new Date();
+            let month = today.getMonth() + 1;
+            let date = today.getDate();
             request({
-                url: 'https://api.dimigo.in/meal/date/2022-08-17',
+                url: `https://api.dimigo.in/meal/date/2022-${month < 10 ? `0${month}` : month}-${date < 10 ? `0${date}` : date}`,
                 gzip: true
             }, (error, response, body) => {
                 body = JSON.parse(body).meal;
-                let today = new Date();
-                let month = today.getMonth() + 1;
-                let date = today.getDate();
                 let print = `** ${month}월 ${date}일 아침 **\n`;
                 for(let i = 0; i < body.breakfast.length; i++){
                     print += `${body.breakfast[i]}\n`;
@@ -82,7 +82,9 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async interaction => {
+    console.log(interaction)
 	if (!interaction.isChatInputCommand()) return;
+    
 	const { commandName } = interaction;
     let i;
     for(i = 0; command[i].command != commandName; i++){}
@@ -94,5 +96,8 @@ client.on('interactionCreate', async interaction => {
     else if(typeof e.reply == "function" && e.callback)
         e.reply(client, interaction);
 });
+
+//const channel = client.channels.cache.find(channel => channel.name === channelName)
+//channel.send("message")
 
 client.login(token);
